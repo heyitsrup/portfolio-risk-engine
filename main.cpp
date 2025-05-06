@@ -3,6 +3,7 @@
 #include "computeLogReturns.h"
 #include "portfolio.h"
 #include "asset.h"
+#include "simulation.h"
 
 int main() {
     Portfolio portfolio;
@@ -16,11 +17,20 @@ int main() {
     portfolio.addAsset(pltr);
 
     auto portReturns = portfolio.computePortfolioReturns();
-    for (double r : portReturns) {
-        std::cout << "Portfolio return: " << r << "\n";
+
+    double initialValue = 100000.0;
+    int days = 30;
+    int trials = 10000;
+
+    MonteCarloSimulator simulator(portReturns, initialValue, days, trials);
+    auto paths = simulator.runSimulation();
+
+    for (int i = 0; i < 5; ++i) {
+        std::cout << "Trial " << i + 1 << " final value: $" << paths[i][days] << "\n";
     }
 
-    std::cout << "Total portfolio weight: " << portfolio.totalWeight() << "\n";
+    double var95 = simulator.computeValueAtRisk(0.95);
+    std::cout << "95% Value at Risk (30 days): $" << var95 << "\n";
 
     return 0;
 }
