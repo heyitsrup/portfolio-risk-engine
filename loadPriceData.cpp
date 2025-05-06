@@ -13,7 +13,7 @@ std::vector<PricePoint> loadPriceData(const std::string& filename) {
     }
 
     std::string line;
-    std::getline(file, line); // Skip header
+    std::getline(file, line);
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);

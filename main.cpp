@@ -1,22 +1,26 @@
 #include <iostream>
 #include "loadPriceData.h"
 #include "computeLogReturns.h"
+#include "portfolio.h"
+#include "asset.h"
 
 int main() {
+    Portfolio portfolio;
+
+
     std::string filename = "PLTR.csv";
-    auto priceData = loadPriceData(filename);
+    auto pltrPriceData = loadPriceData(filename);
+    auto pltrReturns = computeLogReturns(pltrPriceData);
 
-    if (priceData.size() < 2) {
-        std::cerr << "Not enough data to compute returns.\n";
-        return 1;
+    Asset pltr("PLTR", pltrReturns, 1.0);
+    portfolio.addAsset(pltr);
+
+    auto portReturns = portfolio.computePortfolioReturns();
+    for (double r : portReturns) {
+        std::cout << "Portfolio return: " << r << "\n";
     }
 
-    auto logReturns = computeLogReturns(priceData);
-
-    std::cout << "Log Returns:\n";
-    for (size_t i = 0; i < logReturns.size(); ++i) {
-        std::cout << priceData[i + 1].date << ": " << logReturns[i] << "\n";
-    }
+    std::cout << "Total portfolio weight: " << portfolio.totalWeight() << "\n";
 
     return 0;
 }
