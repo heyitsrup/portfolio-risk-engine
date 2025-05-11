@@ -29,11 +29,11 @@ std::vector<std::vector<double>> MonteCarloSimulator::runSimulation() const {
 }
 
 double MonteCarloSimulator::computeValueAtRisk(double confidenceLevel) const {
-    auto paths = runSimulation();  // Run full simulation
+    auto paths = runSimulation();
     std::vector<double> finalValues;
 
     for (const auto& path : paths) {
-        finalValues.push_back(path.back());  // Last value of each trial
+        finalValues.push_back(path.back());
     }
 
     std::sort(finalValues.begin(), finalValues.end());

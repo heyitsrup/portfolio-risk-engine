@@ -8,7 +8,6 @@
 int main() {
     Portfolio portfolio;
 
-
     std::string filename = "PLTR.csv";
     auto pltrPriceData = loadPriceData(filename);
     auto pltrReturns = computeLogReturns(pltrPriceData);

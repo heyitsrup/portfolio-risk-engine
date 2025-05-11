@@ -10,7 +10,7 @@ std::vector<double> Portfolio::computePortfolioReturns() const {
 
     size_t len = assets[0].returns.size();
     for (const auto& a : assets) {
-        if (a.returns.size() != len)
+        if (a.returns.size() != len) 
             throw std::runtime_error("All assets must have the same number of returns.");
     }
 
@@ -21,7 +21,7 @@ std::vector<double> Portfolio::computePortfolioReturns() const {
             portfolioReturns[i] += asset.returns[i] * asset.weight;
         }
     }
-
+    
     return portfolioReturns;
 }
 
