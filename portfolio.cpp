@@ -1,3 +1,4 @@
+using namespace std;
 #include "portfolio.h"
 #include <stdexcept>
 #include <iostream>
@@ -7,11 +8,11 @@ void Portfolio::addAsset(const Asset& asset) {
     assets.push_back(asset);
 }
 
-std::vector<double> Portfolio::computePortfolioReturns() const {
+vector<double> Portfolio::computePortfolioReturns() const {
     // Error handling - if assets is empty
     if (assets.empty())
     {
-        std::cerr << "Error - No assets found" << std::endl;
+        cerr << "Error - No assets found" << endl;
         return {};
     }
 
@@ -22,12 +23,12 @@ std::vector<double> Portfolio::computePortfolioReturns() const {
     for (const auto& a : assets) {
         if (a.returns.size() != len)
         {
-            throw std::runtime_error("All assets must have the same number of returns.");
+            throw runtime_error("All assets must have the same number of returns.");
         }        
     }
 
     // Create vector for portfolio returns with inital size of len and values of 0.0
-    std::vector<double> portfolioReturns(len, 0.0);
+    vector<double> portfolioReturns(len, 0.0);
 
     /*
         Compute combined portfolio returns across all assets, 

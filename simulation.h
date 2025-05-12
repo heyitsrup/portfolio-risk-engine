@@ -1,3 +1,4 @@
+using namespace std;
 #ifndef SIMULATION_H
 #define SIMulation_h
 
@@ -5,20 +6,20 @@
 
 class MonteCarloSimulator {
     private:
-        std::vector<double> historicalReturns;
+        vector<double> historicalReturns;
         double initialValue;
         int days;
         int trials;
 
     public:
         MonteCarloSimulator(
-            const std::vector<double>& returns,
+            const vector<double>& returns,
             double initialValue,
             int days,
             int trials
         );
 
-        std::vector<std::vector<double>> runSimulation() const;
+        vector<vector<double>> runSimulation() const;
 
         double computeValueAtRisk(double confidenceLevel = 0.95) const;
 };

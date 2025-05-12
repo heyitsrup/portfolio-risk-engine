@@ -1,45 +1,47 @@
+
+using namespace std;
 #include "loader.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-std::vector<pricePoint> loadPriceData(const std::string& filename) {
+vector<pricePoint> loadPriceData(const string& filename) {
     // Create mutable array of object pricePoint
-    std::vector<pricePoint> prices;
+    vector<pricePoint> prices;
 
     // Stream of data used for reading input from a file
-    std::ifstream file(filename);
+    ifstream file(filename);
 
     // Error handling - cannot open file
     if (!file.is_open())
     {
-        std::cerr << "Error opening file:" << filename << std::endl;
+        cerr << "Error opening file:" << filename << endl;
         return prices;
     }
 
-    std::string line;
+    string line;
 
     // Below line skips header row
-    std::getline(file, line);
+    getline(file, line);
 
     // Read from file, create price variable, append to prices array
-    while (std::getline(file, line))
+    while (getline(file, line))
     {
-        std::stringstream ss(line);
-        std::string date, closeStr;
+        stringstream ss(line);
+        string date, closeStr;
         double price;
 
-        std::getline(ss, date, ',');
-        std::getline(ss, closeStr, ',');
+        getline(ss, date, ',');
+        getline(ss, closeStr, ',');
 
         // Error handling - Invalid data
         try
         {
-            price = std::stod(closeStr);
+            price = stod(closeStr);
         } 
         catch(...) 
         {
-            std::cerr << "Invalid data on line: " << line << std::endl;
+            cerr << "Invalid data on line: " << line << endl;
             continue;
         }
 

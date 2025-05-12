@@ -1,3 +1,4 @@
+using namespace std;
 #ifndef ASSET_H
 #define ASSET_H
 
@@ -5,12 +6,12 @@
 #include <vector>
 
 struct Asset {
-    std::string name;
-    std::vector<double> returns;
+    string name;
+    vector<double> returns;
     double weight;
 
     Asset(
-        const std::string& name, const std::vector<double>& returns, double weight) 
+        const string& name, const vector<double>& returns, double weight) 
         : name(name), returns(returns), weight(weight) {}
 };
 

@@ -1,3 +1,4 @@
+using namespace std;
 #ifndef LOADER_H
 #define LOADER_H
 
@@ -6,10 +7,10 @@
 
 // Object pricePoint with date (string) and closing price (double)
 struct pricePoint {
-    std::string date;
+    string date;
     double close;
 };
 
-std::vector<pricePoint> loadPriceData(const std::string& filename);
+vector<pricePoint> loadPriceData(const string& filename);
 
 #endif

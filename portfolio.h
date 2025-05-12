@@ -1,3 +1,4 @@
+using namespace std;
 #ifndef PORTFOLIO_H
 #define PORTFOLIO_H
 
@@ -6,11 +7,11 @@
 
 class Portfolio {
     private:
-        std::vector<Asset> assets;
+        vector<Asset> assets;
 
     public:
         void addAsset(const Asset& asset);
-        std::vector<double> computePortfolioReturns() const;
+        vector<double> computePortfolioReturns() const;
         double totalWeight() const;
 };
 
