@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+// Object pricePoint with date (string) and closing price (double)
 struct pricePoint {
     std::string date;
     double close;
