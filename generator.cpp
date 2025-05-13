@@ -24,10 +24,16 @@ vector<double> Generator::computeLogReturns(int days, double mean, double stddev
 }
 
 vector<double> Generator::computeLogReturnsFromHistory(const vector<double>& historicalReturns, int days) {
+    // Create vector with length of days parameter
     vector<double> logReturns(days);
-
+    
+    // Generate random seed
     random_device rd;
+
+    // Creates a Mersenne Twister Engine (RNG)
     mt19937 gen(rd());
+
+    // Defines a uniform distribution using historical returns parameter
     uniform_int_distribution<> dist(0, historicalReturns.size() - 1);
 
     for (int i = 0; i < days; i++) {

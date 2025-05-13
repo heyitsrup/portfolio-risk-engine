@@ -31,8 +31,8 @@ int main() {
     auto portReturns = portfolio.computePortfolioReturns();
 
     double initialValue = 10000.0;
-    int days = 30;
-    int trials = 1000;
+    int days = 252;
+    int trials = 100'000;
 
     MonteCarloSimulator sim_n(portReturns, SimulationMethod::Normal, initialValue, days, trials);
     auto paths_n = sim_n.runSimulation();
@@ -41,8 +41,8 @@ int main() {
         cout << "Trial " << i + 1 << " final value: $" << paths_n[i][days] << "\n";
     }
 
-    double var95_n = sim_n.computeValueAtRisk(0.95);
-    cout << "95% VaR (30 days): $" << var95_n << "\n";
+    double var95_n = sim_n.computeValueAtRisk(paths_n, 0.95);
+    cout << "95% VaR (252 days): $" << var95_n << "\n";
 
     MonteCarloSimulator sim_h(portReturns, SimulationMethod::Historical, initialValue, days, trials);
     auto paths_h = sim_h.runSimulation();
@@ -51,8 +51,8 @@ int main() {
         cout << "Trial " << i + 1 << " final value: $" << paths_h[i][days] << "\n";
     }
 
-    double var95_h = sim_h.computeValueAtRisk(0.95);
-    cout << "95% VaR (30 days): $" << var95_h << "\n";
+    double var95_h = sim_h.computeValueAtRisk(paths_h, 0.95);
+    cout << "95% VaR (252 days): $" << var95_h << "\n";
 
     return 0;
     
