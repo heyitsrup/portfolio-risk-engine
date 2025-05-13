@@ -29,6 +29,8 @@ class MonteCarloSimulator {
         vector<vector<double>> runSimulation() const;
 
         double computeValueAtRisk(vector<vector<double>>& paths, double confidenceLevel = 0.95) const;
+        double computeExpectedShortfall(vector<vector<double>>& paths, double confidenceLevel = 0.95) const;
+
 };
 
 #endif

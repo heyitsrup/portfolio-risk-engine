@@ -44,6 +44,9 @@ int main() {
     double var95_n = sim_n.computeValueAtRisk(paths_n, 0.95);
     cout << "95% VaR (252 days): $" << var95_n << "\n";
 
+    double es95_n = sim_n.computeExpectedShortfall(paths_n, 0.95);
+    cout << "95% Expected Shortfall (CVaR) (252 days): $" << es95_n << "\n";
+
     MonteCarloSimulator sim_h(portReturns, SimulationMethod::Historical, initialValue, days, trials);
     auto paths_h = sim_h.runSimulation();
 
@@ -53,6 +56,9 @@ int main() {
 
     double var95_h = sim_h.computeValueAtRisk(paths_h, 0.95);
     cout << "95% VaR (252 days): $" << var95_h << "\n";
+
+    double es95_h = sim_h.computeExpectedShortfall(paths_h, 0.95);
+    cout << "95% Expected Shortfall (CVaR) (252 days): $" << es95_h << "\n";
 
     return 0;
     

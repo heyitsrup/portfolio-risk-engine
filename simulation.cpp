@@ -104,3 +104,39 @@ double MonteCarloSimulator::computeValueAtRisk(vector<vector<double>>& paths, do
     // VaR is the difference between initial value and the percentile value
     return initialValue - varValue;
 }
+
+double MonteCarloSimulator::computeExpectedShortfall(vector<vector<double>>& paths, double confidenceLevel) const {
+    vector<double> finalValues;
+
+    for (const auto& path : paths) 
+    {
+        finalValues.push_back(path.back());
+    }
+
+    vector<double> losses;
+
+    for (double val : finalValues)
+    {
+        double loss = initialValue - val;
+        losses.push_back(loss);
+    }
+
+    sort(losses.begin(), losses.end());
+
+    int varIndex = static_cast<int>((1.0 - confidenceLevel) * losses.size());
+
+    double varThreshold = losses[varIndex];
+
+    double sum = 0.0;
+    int count = 0;
+    for (double loss : losses)
+    {
+        if (loss >= varThreshold) {
+            sum += loss;
+            ++count;
+        }
+    }
+
+    return count > 0 ? sum / count : 0.0;     
+    
+}
