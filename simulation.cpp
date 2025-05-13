@@ -7,11 +7,27 @@ using namespace std;
 // Constructor for Monte Carlo Simulator
 MonteCarloSimulator::MonteCarloSimulator(
     const vector<double>& returns,
-    SimulationMethod method = SimulationMethod::Normal,
+    SimulationMethod method,
     double initVal,
     int days,
     int trials
 ) : historicalReturns(returns), method(method), initialValue(initVal), days(days), trials(trials) {}
+
+void MonteCarloSimulator::computeMeanStdDev(double& mean, double& stddev) const {
+    double sum = 0.0, sqSum = 0.0;
+    for (double r : historicalReturns)
+    {
+        sum += r;
+    }
+    mean = sum / historicalReturns.size();
+
+    for (double r : historicalReturns)
+    {
+        sqSum += (r - mean) * (r - mean);
+    }
+    stddev = sqrt(sqSum / historicalReturns.size());
+    
+}
 
 // 
 vector<vector<double>> MonteCarloSimulator::runSimulation() const {
@@ -23,6 +39,11 @@ vector<vector<double>> MonteCarloSimulator::runSimulation() const {
 
     // Creates a Mersenne Twister engine (RNG)
     mt19937 gen(rd());
+
+    double mean = 0.0, stddev = 0.0;
+    if (method == SimulationMethod::Normal) {
+        computeMeanStdDev(mean, stddev);
+    }
 
     for (int t = 0; t < trials; t++)
     {

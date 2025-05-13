@@ -15,6 +15,8 @@ class MonteCarloSimulator {
         int days;
         int trials;
 
+        void computeMeanStdDev(double& mean, double& stddev) const;
+
     public:
         MonteCarloSimulator(
             const vector<double>& returns,

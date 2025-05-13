@@ -4,7 +4,7 @@ using namespace std;
 #include "asset.h"
 #include "portfolio.h"
 #include "simulation.h"
-#include "syntheticDataGenerator.h"
+#include "generator.h"
 
 int main() {
     Portfolio portfolio;
@@ -18,7 +18,7 @@ int main() {
     {
         string name = "asset_" + to_string(i);
 
-        auto logReturnsData = SyntheticDataGenerator::computeLogReturns(tradingDays, mean, stddev);
+        auto logReturnsData = Generator::computeLogReturns(tradingDays, mean, stddev);
 
         Asset temp(name, logReturnsData, 0.25);
         portfolio.addAsset(temp);
@@ -34,15 +34,25 @@ int main() {
     int days = 30;
     int trials = 1000;
 
-    MonteCarloSimulator sim(portReturns, initialValue, days, trials);
-    auto paths = sim.runSimulation();
+    MonteCarloSimulator sim_n(portReturns, SimulationMethod::Normal, initialValue, days, trials);
+    auto paths_n = sim_n.runSimulation();
 
-    for (int i = 0; i < 1000; ++i) {
-        cout << "Trial " << i + 1 << " final value: $" << paths[i][days] << "\n";
+    for (int i = 0; i < 5; i++) {
+        cout << "Trial " << i + 1 << " final value: $" << paths_n[i][days] << "\n";
     }
 
-    double var95 = sim.computeValueAtRisk(0.95);
-    cout << "95% VaR (30 days): $" << var95 << "\n";
+    double var95_n = sim_n.computeValueAtRisk(0.95);
+    cout << "95% VaR (30 days): $" << var95_n << "\n";
+
+    MonteCarloSimulator sim_h(portReturns, SimulationMethod::Historical, initialValue, days, trials);
+    auto paths_h = sim_h.runSimulation();
+
+    for (int i = 0; i < 6; i++) {
+        cout << "Trial " << i + 1 << " final value: $" << paths_h[i][days] << "\n";
+    }
+
+    double var95_h = sim_h.computeValueAtRisk(0.95);
+    cout << "95% VaR (30 days): $" << var95_h << "\n";
 
     return 0;
     
