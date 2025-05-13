@@ -1,8 +1,6 @@
 using namespace std;
 #include <string>
 #include <iostream>
-#include "loader.h"
-#include "returns.h"
 #include "asset.h"
 #include "portfolio.h"
 #include "simulation.h"
