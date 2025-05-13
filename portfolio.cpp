@@ -52,3 +52,7 @@ double Portfolio::totalWeight() const {
     }
     return sum;
 }
+
+const vector<Asset>& Portfolio::getAssets() const {
+    return assets;
+}

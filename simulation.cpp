@@ -7,10 +7,11 @@ using namespace std;
 // Constructor for Monte Carlo Simulator
 MonteCarloSimulator::MonteCarloSimulator(
     const vector<double>& returns,
+    SimulationMethod method = SimulationMethod::Normal,
     double initVal,
     int days,
     int trials
-) : historicalReturns(returns), initialValue(initVal), days(days), trials(trials) {}
+) : historicalReturns(returns), method(method), initialValue(initVal), days(days), trials(trials) {}
 
 // 
 vector<vector<double>> MonteCarloSimulator::runSimulation() const {
@@ -23,14 +24,20 @@ vector<vector<double>> MonteCarloSimulator::runSimulation() const {
     // Creates a Mersenne Twister engine (RNG)
     mt19937 gen(rd());
 
-    // Defines a uniform distribution over integers from 0 to historicalReturns.size() - 1
-    uniform_int_distribution<> dist(0, historicalReturns.size() - 1);
-
     for (int t = 0; t < trials; t++)
     {
         for (int d = 1; d <= days; d++)
         {
-            double sampledReturns = historicalReturns[dist(gen)];
+            double sampledReturns;
+            if (method == SimulationMethod::Normal)
+            {
+                normal_distribution<> dist(mean, stddev);
+                sampledReturns = dist(gen);
+            } else {
+                uniform_int_distribution<> dist(0, historicalReturns.size() - 1);
+                sampledReturns = historicalReturns[dist(gen)];
+            }
+            
             double prevValue = simulationPaths[t][d - 1];
             simulationPaths[t][d] = prevValue * exp(sampledReturns);
         }

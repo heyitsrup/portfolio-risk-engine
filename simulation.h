@@ -4,9 +4,13 @@ using namespace std;
 
 #include <vector>
 
+enum class SimulationMethod { Historical, Normal };
+
 class MonteCarloSimulator {
+    
     private:
         vector<double> historicalReturns;
+        SimulationMethod method;
         double initialValue;
         int days;
         int trials;
@@ -14,6 +18,7 @@ class MonteCarloSimulator {
     public:
         MonteCarloSimulator(
             const vector<double>& returns,
+            SimulationMethod method,
             double initialValue,
             int days,
             int trials
