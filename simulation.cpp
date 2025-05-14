@@ -3,6 +3,8 @@ using namespace std;
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include <thread>
+#include <mutex>
 
 // Constructor for Monte Carlo Simulator
 MonteCarloSimulator::MonteCarloSimulator(
@@ -30,7 +32,6 @@ void MonteCarloSimulator::computeMeanStdDev(double& mean, double& stddev) const 
     
 }
 
-// 
 vector<vector<double>> MonteCarloSimulator::runSimulation() const {
     // Set up simulation paths vector with intial size trials and value using vector
     vector<vector<double>> simulationPaths(trials, vector<double>(days + 1, initialValue));
@@ -80,6 +81,50 @@ vector<vector<double>> MonteCarloSimulator::runSimulation() const {
 
     return simulationPaths;
     
+}
+
+vector<vector<double>> MonteCarloSimulator::runSimulationInParallel(int threadCount) const {
+    vector<vector<double>> allPaths(trials, vector<double>(days + 1, initialValue));
+    mutex mtx;
+
+    // Generate random seed
+    random_device rd;
+
+    // Creates a Mersenne Twister engine (RNG)
+    mt19937 gen(rd());
+
+    double mean = 0.0, stddev = 0.0;
+    if (method == SimulationMethod::Normal) {
+        computeMeanStdDev(mean, stddev);
+    }
+
+    auto worker = [&](int start, int end) {
+        for (int t = start; t < end; ++t) {
+            for (int d = 1; d <= days; ++d) {
+                double sampledReturns;
+                if (method == SimulationMethod::Normal) {
+                    normal_distribution<> dist(mean, stddev);
+                    sampledReturns = dist(gen);
+                } else {
+                    uniform_int_distribution<> dist(0, historicalReturns.size() - 1);
+                    sampledReturns = historicalReturns[dist(gen)];
+                }
+                allPaths[t][d] = allPaths[t][d - 1] * exp(sampledReturns);
+            }
+        }
+    };
+
+    vector<thread> threads;
+    int batch = trials / threadCount;
+    for (int i = 0; i < threadCount; ++i) {
+        int start = i * batch;
+        int end = (i == threadCount - 1) ? trials : start + batch;
+        threads.emplace_back(worker, start, end);
+    }
+
+    for (auto& th : threads) th.join();
+
+    return allPaths;
 }
 
 // Computes the Value at Risk (VaR) given a set of simulation paths and a confidence level

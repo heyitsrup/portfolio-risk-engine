@@ -65,10 +65,6 @@ int main() {
         portfolio.addAsset(temp);
     }
 
-    // for (const auto& a : portfolio.getAssets()) {
-    //     cout << a.name << endl;
-    // }
-
     auto portReturns = portfolio.computePortfolioReturns();
 
     double initialValue = 10000.0;
@@ -76,7 +72,8 @@ int main() {
     int trials = 100'000;
 
     MonteCarloSimulator sim_n(portReturns, SimulationMethod::Normal, initialValue, days, trials);
-    auto paths_n = sim_n.runSimulation();
+    // auto paths_n = sim_n.runSimulation();
+    auto paths_n = sim_n.runSimulationInParallel();
 
     for (int i = 0; i < 5; i++) {
         cout << "Trial (Normal)" << i + 1 << " final value: $" << paths_n[i][days] << "\n";

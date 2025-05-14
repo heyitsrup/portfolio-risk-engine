@@ -3,6 +3,7 @@ using namespace std;
 #define SIMulation_h
 
 #include <vector>
+#include <thread>
 
 enum class SimulationMethod { Historical, Normal };
 
@@ -27,6 +28,7 @@ class MonteCarloSimulator {
         );
 
         vector<vector<double>> runSimulation() const;
+        vector<vector<double>> runSimulationInParallel(int threadCount = std::thread::hardware_concurrency()) const;
 
         double computeValueAtRisk(vector<vector<double>>& paths, double confidenceLevel = 0.95) const;
         double computeExpectedShortfall(vector<vector<double>>& paths, double confidenceLevel = 0.95) const;
