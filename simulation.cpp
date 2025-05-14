@@ -140,3 +140,26 @@ double MonteCarloSimulator::computeExpectedShortfall(vector<vector<double>>& pat
     return count > 0 ? sum / count : 0.0;     
     
 }
+
+double MonteCarloSimulator::computeSharpeRatio(vector<vector<double>>& paths, double riskFreeRate) const {
+    vector<double> returns;
+
+    for (const auto& path : paths) 
+    {
+        double finalValue = path.back();
+        double totalReturn = log(finalValue / initialValue);
+        returns.push_back(totalReturn);
+    }
+
+    double sum = 0.0;
+    for (double r : returns) sum += r;
+    double mean = sum / returns.size();
+
+    double sqSum = 0.0;
+    for (double r : returns) sqSum += (r - mean) * (r - mean);
+    double stddev = sqrt(sqSum / returns.size());
+
+    if (stddev == 0.0) return 0.0;
+
+    return (mean - riskFreeRate) / stddev;    
+}
