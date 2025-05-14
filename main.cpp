@@ -35,6 +35,18 @@ void plotSamplePaths(const vector<vector<double>>& paths, int sampleCount = 50) 
     plt::show();
 }
 
+void maxAndMinValue(const vector<vector<double>>& paths, int days) {
+    vector<double> finalValues;
+    for (const auto& path : paths) {
+        finalValues.push_back(path[days]);
+    }
+
+    // Calculate min and max
+    auto [minIt, maxIt] = minmax_element(finalValues.begin(), finalValues.end());
+    cout << "Lowest final trial value: $" << *minIt << "\n";
+    cout << "Highest final trial value: $" << *maxIt << "\n";
+}
+
 int main() {
     Portfolio portfolio;
 
@@ -70,6 +82,8 @@ int main() {
         cout << "Trial (Normal)" << i + 1 << " final value: $" << paths_n[i][days] << "\n";
     }
 
+    maxAndMinValue(paths_n, days);
+
     double var95_n = sim_n.computeValueAtRisk(paths_n, 0.95);
     cout << "95% VaR (252 days): $" << var95_n << "\n";
 
@@ -85,6 +99,8 @@ int main() {
     for (int i = 0; i < 6; i++) {
         cout << "Trial (Historical)" << i + 1 << " final value: $" << paths_h[i][days] << "\n";
     }
+
+    maxAndMinValue(paths_h, days);
 
     double var95_h = sim_h.computeValueAtRisk(paths_h, 0.95);
     cout << "95% VaR (252 days): $" << var95_h << "\n";
