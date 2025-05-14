@@ -3,7 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:/Users/singh/AppData/Local/Programs/Python/Python310/include",
+                "C:/Users/singh/git/portfolio-risk-engine/matplotlib-cpp"
             ],
             "defines": [
                 "_DEBUG",
